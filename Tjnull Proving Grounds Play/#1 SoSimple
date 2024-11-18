@@ -80,3 +80,265 @@ sudo -u root /opt/tools/server-health.sh
 
 cd /root
 cat flag.txt
+
+p1
+import matplotlib.pyplot as plt
+for index, i in enumerate(plt.colormaps()):
+    if index >= 3:
+        break
+    sTitle = 'ASAD FAIZEE - KSMSCIT003 \n Color Map: ' + i
+    fig = plt.figure(figsize=(4, 4))
+    plt.title(sTitle)
+    imgplot = plt.imshow(np.random.rand(10, 10))
+    imgplot.set_cmap(i)
+    plt.show()
+
+p2
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import fiona
+from shapely.geometry import Point
+fiona.drvsupport.supported_drivers['ESRI Shapefile'] = 'rw'
+with fiona.Env(SHAPE_RESTORE_SHX='YES'):
+    india_gdf = gpd.read_file("D:/MSC.IT/SEM 3/Data Science implementation/India Shape/india_st.shp")
+devgad=gpd.GeoDataFrame([{'City':'Devgad','geometry':Point(73.3886,16.3754)}],crs="EPSG:4326")
+fig,ax=plt.subplots(1,1,figsize=(10,10))
+india_gdf.plot(ax=ax,color='white',edgecolor="black")
+devgad.plot(ax=ax,color='red')
+for x,y,label in zip(devgad.geometry.x,devgad.geometry.y,devgad['City']):
+  ax.text(x,y,label)
+plt.title("ASAD FAIZEE KSMSCIT003 \n India")
+plt.show()
+
+p3
+import numpy as np
+import pandas as pd
+import folium
+rm = folium.Map(location=[20.5937, 78.9629], zoom_start=5)
+cities = [
+    {"name": "New Delhi", "location": [28.6139, 77.2090], "population": "21.75 million"},
+    {"name": "Mumbai", "location": [19.0760, 72.8777], "population": "20.18 million"},
+    {"name": "Chennai", "location": [13.0827, 80.2707], "population": "12.34 million"},
+    {"name": "Kolkata", "location": [22.5726, 88.3639], "population": "10.56 million"},
+    {"name": "Hyderabad", "location": [17.3850, 78.4867], "population": "9.87 million"},
+    {"name": "Bangalore", "location": [12.9716, 77.5946], "population": "8.42 million"},
+    {"name": "Pune", "location": [18.5204, 73.8567], "population": "7.23 million"},
+    {"name": "Devgad", "location": [16.3754, 73.3886], "population": "100"}
+]
+for city in cities:
+    folium.Marker(
+        location=city["location"],
+        popup=f"<b>{city['name']}</b><br>Population: {city['population']}",
+        tooltip=city['name']
+    ).add_to(rm)
+latitudes = np.random.uniform(6, 35, 5)
+longitudes = np.random.uniform(68, 97, 5)
+village_names = ['Village A', 'Village B', 'Village C', 'Village D', 'Village E']
+for lat, lon, village_name in zip(latitudes, longitudes, village_names):
+    folium.Marker(
+        location=[lat, lon],
+        popup=f"<b>{village_name}</b><br>Randomly Generated Location",
+        tooltip=village_name
+    ).add_to(rm)
+rm.save('india_map_with_random_villages.html')
+rm
+
+p4
+import warnings
+warnings.filterwarnings('ignore')
+from astropy.time import Time
+from astropy.coordinates import solar_system_ephemeris, get_moon, AltAz, EarthLocation
+import astropy.units as u
+import matplotlib.pyplot as plt
+# Set up the ephemeris and get the current time in UTC
+solar_system_ephemeris.set('builtin')
+time_utc = Time.now()
+moon = get_moon(time_utc)
+location = EarthLocation.of_site('Kitt Peak')
+moon_altaz = moon.transform_to(AltAz(obstime=time_utc, location=location))
+print(f'Moon coordinates (RA, Dec): {moon.ra}, {moon.dec}')
+print(f'Moon Altitude: {moon_altaz.alt}')
+print(f'Moon Azimuth: {moon_altaz.az}')
+plt.figure(figsize=(10, 8))
+plt.subplot(111, projection='polar')
+plt.title('\n ASAD FAIZEE - KSMSCIT003 \n Moon Position', y=1.1)
+plt.polar(moon.ra.radian, moon.dec.radian, 'o', markersize=10)
+plt.grid(True)
+plt.show()
+
+p5
+import pandas as pd
+import plotly.express as px
+URL = "https://covid.ourworldindata.org/data/owid-covid-data.csv"
+df = pd.read_csv(URL)
+country = 'Germany'
+df_country = df[df['location'] == country]
+if df_country.empty:
+    raise ValueError(f'Country {country} not found in the dataset')
+df_country['date'] = pd.to_datetime(df_country['date'])
+df_country['month'] = df_country['date'].dt.to_period('M')
+monthly_cases = df_country.groupby('month')['new_cases'].sum().reset_index()
+monthly_cases['month'] = monthly_cases['month'].astype(str)
+fig = px.bar(monthly_cases, x='month', y='new_cases', title=f'ASAD FAIZEE - KSMSCIT003 | Total Corona Cases in {country} over time')
+fig.show()
+
+!pip install pandas plotly
+import pandas as pd
+import plotly.express as px
+URL = "https://covid.ourworldindata.org/data/owid-covid-data.csv"
+df = pd.read_csv(URL)
+country = 'Germany'
+df_country = df[df['location'] == country]
+df_country = df_country[['date', 'new_cases']]
+fig = px.line(df_country, x='date', y='new_cases', title=f'ASAD FAIZEE - KSMSCIT003| Corona Cases in {country} over time')
+fig.show()
+
+p6
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import datasets, linear_model
+from sklearn.metrics import mean_squared_error, r2_score
+diabetes = datasets.load_diabetes()
+diabetes_X = diabetes.data[:, np.newaxis, 2]
+diabetes_X_train = diabetes_X[:-30]
+diabetes_X_test = diabetes_X[-50:]
+print("BMI:",diabetes_X_test)
+diabetes_y_train = diabetes.target[:-30]
+diabetes_y_test = diabetes.target[-50:]
+regr = linear_model.LinearRegression()
+regr.fit(diabetes_X_train, diabetes_y_train)
+diabetes_y_pred = regr.predict(diabetes_X_test)
+print('Coefficients: \n', regr.coef_)
+print("Mean squared error: %.2f"
+      % mean_squared_error(diabetes_y_test, diabetes_y_pred))
+print('Variance score: %.2f' % r2_score(diabetes_y_test, diabetes_y_pred))
+plt.scatter(diabetes_X_test, diabetes_y_test,  color='blue')
+plt.plot(diabetes_X_test, diabetes_y_pred, color='red', linewidth=2)
+plt.xticks(())
+plt.yticks(())
+plt.axis('tight')
+plt.title("ASAD FAIZEE - KSMSCIT003 \n Diabetes")
+plt.xlabel("BMI")
+plt.ylabel("Age")
+plt.show()
+
+p7
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+text = """
+ASAD FAIZEE - KSMSCIT003 - KC College - DSI Practical
+"""
+wordcloud = WordCloud(width=800, height=800, background_color='white').generate(text)
+plt.figure(figsize=(5,5))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
+
+p11
+from scipy.io import wavfile
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+def show_info(aname, a, r):
+    print(f"Audio: {aname}\nRate: {r}\nShape: {a.shape}")
+    plot_info(aname, a, r)
+def plot_info(aname, a, r):
+    plt.title(f'Signal Wave - {aname} at {r}hz')
+    sLegend = []
+    for c in range(a.shape[1]):
+        sLabel = 'Ch' + str(c + 1)
+        sLegend.append(sLabel)
+        plt.plot(a[:, c], label=sLabel)
+    plt.legend(sLegend)
+    plt.show()
+sInputFileName = '4ch-sound.wav'
+print('Processing: ', sInputFileName)
+InputRate, InputData = wavfile.read(sInputFileName)
+show_info("4 channel", InputData, InputRate)
+ProcessData = pd.DataFrame(InputData)
+ProcessData.columns = ['Ch1', 'Ch2', 'Ch3', 'Ch4']
+sOutputFileName = 'AudioToCSV.csv'
+ProcessData.to_csv(sOutputFileName, index=False)
+print(ProcessData)
+
+from PIL import Image
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+def image_to_csv_and_show(image_path, csv_output_path):
+    img = Image.open(image_path).convert('RGB')
+    img_array = np.array(img)
+    print(f"Image Path: {image_path}")
+    print(f"Shape: {img_array.shape}")
+    print(f"Dtype: {img_array.dtype}")
+    print(f"Min, Max: {img_array.min()}, {img_array.max()}")
+    df = pd.DataFrame(img_array.reshape(-1, 3), columns=['R', 'G', 'B'])
+    df.to_csv(csv_output_path, index=False, header=False)  # Avoid header and index
+    plt.imshow(img_array)
+    plt.title('Image Preview')
+    plt.axis('off')  # Hide axis
+    plt.show()
+def visualize_csv(csv_path, image_shape):
+    df = pd.read_csv(csv_path, header=None, names=['R', 'G', 'B'])
+    img_array = df.values.reshape(image_shape)
+    mid_row = img_array.shape[0] // 2
+    plt.figure(figsize=(15, 5))
+    plt.subplot(3, 1, 1)
+    plt.plot(img_array[mid_row, :, 0], color='red')
+    plt.title('Red Channel Pixel Values')
+    plt.subplot(3, 1, 2)
+    plt.plot(img_array[mid_row, :, 1], color='green')
+    plt.title('Green Channel Pixel Values')
+    plt.subplot(3, 1, 3)
+    plt.plot(img_array[mid_row, :, 2], color='blue')
+    plt.title('Blue Channel Pixel Values')
+    plt.tight_layout()
+    plt.show()
+image_path = '1.jpg'
+csv_output_path = 'ImageToCSV.csv'
+img_array = np.array(Image.open(image_path).convert('RGB'))
+shape = img_array.shape
+image_to_csv_and_show(image_path, csv_output_path)
+visualize_csv(csv_output_path, shape)
+
+p12
+import numpy as np
+import pandas as pd
+latitude_data=pd.Series(np.array(range(-90,91,1)))
+longitude_data=pd.Series(np.array(range(-180,181,1)))
+latitudeset=latitude_data.sample(10)
+longitudeset=longitude_data.sample(10)
+latitudeavg=np.average(latitudeset)
+longitudeavg=np.average(longitudeset)
+print('Latitude')
+print(latitudeset)
+print('Latitude avg',latitudeavg)
+print("==============================")
+print(longitudeset)
+print('Longitude')
+print('Longitude avg',longitudeavg)
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.basemap import Basemap
+plt.figure(figsize=(12, 6))
+map = Basemap(projection='mill', llcrnrlat=-60, urcrnrlat=90,
+              llcrnrlon=-180, urcrnrlon=180, resolution='c')
+map.drawcoastlines()
+map.drawcountries()
+map.drawmapboundary(fill_color='aqua')
+map.fillcontinents(color='lightgreen', lake_color='aqua')
+x, y = map(longitudeset.values, latitudeset.values)
+map.scatter(x, y, marker='o', color='red', s=100, label='Sampled Points')
+avg_x, avg_y = map(longitudeavg, latitudeavg)
+map.scatter(avg_x, avg_y, marker='X', color='blue', s=200, label='Average Point')
+plt.title('ASAD FAIZEE - KSMSCIT003 - Randomly Sampled Latitude and Longitude Points on World Map')
+plt.legend()
+plt.show()
+
+import pandas as pd
+ages=[18,23,22,25,46,34,45,87,100,6]
+bins=[0,25,50,75,100]
+bin_label=["Young","Mid","Senior","Old"]
+age_bin=pd.cut(ages,bins=bins,labels=bin_label,right=True)
+print('ASAD FAIZEE - KSMSCIT003')
+print(age_bin)
